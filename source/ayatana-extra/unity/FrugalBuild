@@ -19,7 +19,7 @@ _F_launchpad_branch="4.0"
 Finclude cmake gnome-scriptlet launchpad
 archs=('i686' 'x86_64')
 source=($source frugalware-icon.png)
-sha1sums=('223b4507f8964cb3b35bcb4301c76bdc339cfb5e' \
+sha1sums=('4bc6109443b4cf3c2599983e0abe4dfcb3dade7a' \
           '74be0bbad4cda0b411fb4f8e62c5fa401535aa8b')
 
 build() {
