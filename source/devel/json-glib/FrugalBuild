@@ -2,15 +2,16 @@
 # Maintainer: Devil505 <devil505linux@gmail.com>
 
 pkgname=json-glib
-pkgver=0.12.6
+pkgver=0.13.4
 pkgrel=1
 pkgdesc="JSON library built on GLib"
 url="http://live.gnome.org/JsonGlib"
+_F_gnome_devel="y"
 Finclude gnome
 depends=('glib2')
 makedepends=('gobject-introspection')
 groups=('devel')
 archs=('i686' 'x86_64' 'ppc')
-sha1sums=('9f344bc78fa2a35bb286e42a7ee9c44417763353')
+sha1sums=('d9a963221c1fc241e235a6e50acf462804f4c7bb')
 
 # optimization OK
