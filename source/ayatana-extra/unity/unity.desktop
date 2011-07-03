@@ -1,0 +1,10 @@
+
+[Desktop Entry]
+Name=Unity
+Comment=This session logs you into Unity
+Exec=gnome-session --session=Unity
+TryExec=gnome-session
+Icon=
+Type=Application
+X-Gnome-Gettext-Domain=gnome-session-3.0
+Name[fr_FR]=unity.desktop

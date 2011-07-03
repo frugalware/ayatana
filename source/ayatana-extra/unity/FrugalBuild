@@ -3,7 +3,7 @@
 
 pkgname=unity
 pkgver=4.0.1
-pkgrel=1
+pkgrel=2
 pkgdesc="A desktop experience designed for efficiency of space and interaction"
 url="https://launchpad.net/unity/"
 depends=('compiz-gnome>=0.9.4-2' 'nux>=1.0.1' 'bamf>=0.2.92' 'libdee>=0.5.16' \
@@ -18,9 +18,11 @@ _F_launchpad_ext=".tar.bz2"
 _F_launchpad_branch="4.0"
 Finclude cmake gnome-scriptlet launchpad
 archs=('i686' 'x86_64')
-source=($source frugalware-icon.png)
+source=($source frugalware-icon.png $pkgname.desktop $pkgname.session)
 sha1sums=('4bc6109443b4cf3c2599983e0abe4dfcb3dade7a' \
-          '74be0bbad4cda0b411fb4f8e62c5fa401535aa8b')
+          '74be0bbad4cda0b411fb4f8e62c5fa401535aa8b' \
+          '87515570912a71e38708e5ec1df2227fcf30128a' \
+          '7527affeb3bcc0d815ea0fd18b86e235a3ab60df')
 
 build() {
     CMake_build
@@ -34,6 +36,11 @@ build() {
     # replacing ubuntu icon by frugalware icon :)
     Frm usr/share/unity/3/bfb.png
     Ffile frugalware-icon.png usr/share/unity/3/bfb.png
+
+    # session entries
+    Fmkdir usr/share/{xsessions,gnome-session/sessions}
+    Ffile $pkgname.desktop usr/share/xsessions/$pkgname.desktop
+    Ffile $pkgname.session usr/share/gnome-session/sessions/$pkgname.session
 }
 
 
