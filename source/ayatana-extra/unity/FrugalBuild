@@ -2,11 +2,11 @@
 # Maintainer: Devil505 <devil505linux@gmail.com>
 
 pkgname=unity
-pkgver=4.0.1
-pkgrel=3
+pkgver=4.2.0
+pkgrel=1
 pkgdesc="A desktop experience designed for efficiency of space and interaction"
 url="https://launchpad.net/unity/"
-depends=('compiz-gnome>=0.9.4-2' 'nux>=1.0.1' 'bamf>=0.2.92' 'libdee>=0.5.16' \
+depends=('compiz-gnome>=0.9.4-2' 'nux>=1.0.4' 'bamf>=0.2.92' 'libdee>=0.5.16' \
         'libdbusmenu>=0.4.90' 'libindicator' 'libunity-misc' \
         'unity-asset-pool' 'compizconfig-backend-gconf' 'utouch-geis')
 makedepends=('cmake' 'vala' 'intltool' 'gobject-introspection' 'boost')
@@ -19,7 +19,7 @@ _F_launchpad_branch="4.0"
 Finclude cmake gnome-scriptlet launchpad
 archs=('i686' 'x86_64')
 source=($source frugalware-icon.png $pkgname.desktop $pkgname.session)
-sha1sums=('4bc6109443b4cf3c2599983e0abe4dfcb3dade7a' \
+sha1sums=('e556f2d20ad306fb2389cafe591d0fa79bc83163' \
           '74be0bbad4cda0b411fb4f8e62c5fa401535aa8b' \
           '87515570912a71e38708e5ec1df2227fcf30128a' \
           '7527affeb3bcc0d815ea0fd18b86e235a3ab60df')
