@@ -3,12 +3,12 @@
 
 pkgname=nux
 pkgver=1.0.4
-pkgrel=1
+pkgrel=2
 pkgdesc="An OpenGL toolkit (for Unity)"
 url="https://launchpad.net/nux"
 depends=('dbus-sharp-glib' 'gnome-desktop-sharp' 'gnome-keyring-sharp' \
          'mono-addins' 'xdg-utils' 'glib2' 'gdk-pixbuf2' 'glewmx' 'libsigc++2' \
-         'gmock' 'libboost-static')
+         'gmock' 'libboost-static' 'libsigc++2')
 makedepends=('boost')
 _F_mono_aot=0
 _F_launchpad_ext=".tar.gz"
