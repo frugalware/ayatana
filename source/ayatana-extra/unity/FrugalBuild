@@ -3,13 +3,13 @@
 
 pkgname=unity
 pkgver=4.0.1
-pkgrel=2
+pkgrel=3
 pkgdesc="A desktop experience designed for efficiency of space and interaction"
 url="https://launchpad.net/unity/"
 depends=('compiz-gnome>=0.9.4-2' 'nux>=1.0.1' 'bamf>=0.2.92' 'libdee>=0.5.16' \
         'libdbusmenu>=0.4.90' 'libindicator' 'libunity-misc' \
         'unity-asset-pool' 'compizconfig-backend-gconf' 'utouch-geis')
-makedepends=('vala' 'intltool' 'gobject-introspection' 'boost')
+makedepends=('cmake' 'vala' 'intltool' 'gobject-introspection' 'boost')
 groups=('ayatana-extra')
 _F_cmake_confopts="-DCMAKE_BUILD_TYPE=Release -DCOMPIZ_PLUGIN_INSTALL_TYPE=package"
 _F_gnome_glib="y"
