@@ -2,7 +2,7 @@
 # Maintainer: Devil505 <devil505linux@gmail.com>
 
 pkgname=libindicator
-pkgver=0.3.22
+pkgver=0.3.90
 pkgrel=1
 pkgdesc="A set of symbols and convenience functions that all indicators would like to use."
 url="https://launchpad.net/libindicator"
@@ -10,17 +10,19 @@ depends=('gtk+2' 'gtk+3' 'dbus-glib')
 options=('scriptlet')
 groups=('xlib-extra')
 archs=('i686' 'x86_64')
-up2date="Flasttar $url"
-Fconfopts="${Fconfopts[@]} "
-source=(http://launchpad.net/$pkgname/0.3/$pkgver/+download/$pkgname-$pkgver.tar.gz)
-sha1sums=('83fa101c972a6ff7d42f108f6e0e6adcbc439d5a')
+_F_launchpad_branch="0.4"
+Finclude launchpad
+source=($source 417_416.diff)
+sha1sums=('401237558cab8dcb5258f0b9b38ee4efa50292fd' \
+          '51dc3fe66e3e9018119dcbcc16631bbceeaccf04')
 
 unset MAKEFLAGS
 
 build() {
-    Fbuild --with-gtk=3
+    Fpatchall
+    Fmake --with-gtk=3
     make clean || Fdie
-    Fbuild --with-gtk=2
+    Fmake --with-gtk=2
 }
 
 # optimization OK
