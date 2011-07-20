@@ -2,7 +2,7 @@
 # Maintainer: Devil505 <devil505linux@gmail.com>
 
 pkgname=indicator-session
-pkgver=0.2.90
+pkgver=0.2.93
 pkgrel=1
 pkgdesc="An indicator showing session management, status and user switching."
 depends=('libdbusmenu-gtk>=0.4.90' 'libindicator>=0.3.19' 'gconf')
@@ -12,5 +12,5 @@ archs=('i686' 'x86_64')
 _F_gnome_schemas=('/etc/gconf/schemas/indicator-session.schemas')
 _F_launchpad_branch="0.3"
 Finclude launchpad gnome-scriptlet
-sha1sums=('6ea7220022d79fd1d7a1353002069bdde794c575')
+sha1sums=('01cdfc710df27fa3c22daa1904610a3902232654')
 
