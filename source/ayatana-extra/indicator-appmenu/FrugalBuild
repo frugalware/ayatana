@@ -2,14 +2,14 @@
 # Maintainer: Devil505 <devil505linux@gmail.com>
 
 pkgname=indicator-appmenu
-pkgver=0.2.1
+pkgver=0.2.91
 pkgrel=1
 pkgdesc="An indicator to host the menus from an application."
 url="https://launchpad.net/indicator-appmenu"
-depends=('libindicator>=0.3.19-3' 'libdbusmenu-gtk>=0.4.0' 'ido' 'bamf')
+depends=('libindicator>=0.3.91' 'libdbusmenu-gtk>=0.4.90' 'ido>=0.2.90' 'bamf')
 makedepends=('intltool')
 groups=('ayatana-extra')
 archs=('i686' 'x86_64')
-up2date="Flasttar $url"
-source=($url/0.2/$pkgver/+download/$pkgname-$pkgver.tar.gz)
-sha1sums=('4517eda12df5d0a3e0ca4b0cb60424b7b823e7ad')
+_F_launchpad_branch="0.3"
+Finclude launchpad
+sha1sums=('ebbdb6ed112e4fe723588f5b71ed92c30afc1732')
