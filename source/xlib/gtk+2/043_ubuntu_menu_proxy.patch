@@ -168,18 +168,6 @@ Index: gtk+2.0-2.23.90/gtk/gtkmenubar.c
  	      
  	      g_list_free (menubars);
  	      
-Index: gtk+2.0-2.23.90/gtk/gtkmenushell.h
-===================================================================
---- gtk+2.0-2.23.90/gtk/gtkmenushell.h.orig 2010-11-15 15:13:10.000000000 +0300
-+++ gtk+2.0-2.23.90/gtk/gtkmenushell.h      2010-12-26 14:53:33.000000000 +0300
-@@ -135,6 +135,7 @@
- void     _gtk_menu_shell_set_keyboard_mode (GtkMenuShell *menu_shell,
-                                             gboolean      keyboard_mode);
- gboolean _gtk_menu_shell_get_keyboard_mode (GtkMenuShell *menu_shell);
-+gboolean ubuntu_gtk_menu_shell_activate_mnemonic (GtkMenuShell *shell, GtkWidget *item);
- 
- G_END_DECLS
-
 Index: gtk+2.0-2.23.90/gtk/gtkmenushell.c
 ===================================================================
 --- gtk+2.0-2.23.90.orig/gtk/gtkmenushell.c	2011-01-06 12:15:13.000000000 -0500
