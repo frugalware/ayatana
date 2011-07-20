@@ -1,0 +1,15 @@
+# Compiling Time: 0.35 SBU
+# Maintainer: Devil505 <devil505linux@gmail.com>
+
+pkgname=overlay-scrollbar
+pkgver=0.2.5
+pkgrel=1
+pkgdesc="Ayatana Scrollbars use an overlay to ensure that scrollbars take up no active screen real-estate."
+depends=('gtk+2' 'gtk+3' 'cairo')
+_F_launchpad_dirname="ayatana-scrollbar"
+_F_launchpad_branch="0.2"
+Finclude launchpad
+groups=('ayatana-extra')
+archs=('i686' 'x86_64')
+sha1sums=('bef40cb41dfa8b4e89a5c173241a3b082ee6416f')
+
