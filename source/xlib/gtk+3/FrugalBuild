@@ -3,8 +3,8 @@
 
 pkgname=gtk+3
 _F_gnome_name=gtk+
-pkgver=3.0.11
-pkgrel=1
+pkgver=3.1.8
+pkgrel=2
 pkgdesc="The GTK+ Toolkit (3.x series)"
 depends=('libxext' 'libxfixes' 'cairo' 'libgcc' 'libjpeg' 'libtiff' 'libcups' \
 	'atk' 'pango' 'libxinerama' 'libxcomposite' 'libxcursor' \
@@ -17,9 +17,17 @@ _F_gnome_git="n"
 Finclude gnome
 url="http://www.gtk.org/"
 _F_cd_path="gtk+-$pkgver"
-source=($source im-cedilla.conf)
-sha1sums=('e01da1fe2e1baf9a715cb5ceb1f28d7873eed1fd' \
-          'f8a64241bcc873c1f1110e16306e48577a41852b')
+source=($source im-cedilla.conf \
+        043_ubuntu_menu_proxy.patch \
+        062_ubuntu-set-grab-add.patch \
+        072_indicator_menu_update.patch \
+        100_overlay_scrollbar_loading.patch)
+sha1sums=('30bf6240b3df62d6032c939d0eddbcae228ab7e2' \
+          'f8a64241bcc873c1f1110e16306e48577a41852b' \
+          'a96b2be5f4cae4a9591bebfdbaae1bb504b569d4' \
+          'f4f56d3d79d0f84f5f882efd901d7951b412391d' \
+          '430896c9631da8d12b240fc0a9f47fe054da89eb' \
+          '67fe5f488339fb94cb6830ce285241b5fea8e590')
 
 if [ "$_F_gnome_git" != "n" ]; then
 	unset sha1sums
