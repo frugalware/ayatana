@@ -2,8 +2,8 @@
 # Maintainer: Devil505 <devil505linux@gmail.com>
 
 pkgname=nux
-pkgver=1.0.4
-pkgrel=2
+pkgver=1.0.6
+pkgrel=1
 pkgdesc="An OpenGL toolkit (for Unity)"
 url="https://launchpad.net/nux"
 depends=('dbus-sharp-glib' 'gnome-desktop-sharp' 'gnome-keyring-sharp' \
@@ -16,6 +16,6 @@ _F_launchpad_branch="1.0"
 Finclude mono launchpad
 groups=('ayatana-extra')
 archs=('i686' 'x86_64')
-sha1sums=('68b86f3ce87d3e6621025ff1af323ddd9d60e8d8')
+sha1sums=('5691d38b2aab65845bd47bbe8a41650f3dff1188')
 
 # optimization OK
