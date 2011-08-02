@@ -2,11 +2,11 @@
 # Maintainer: Devil505 <devil505linux@gmail.com>
 
 pkgname=libunity-misc
-pkgver=4.0.2
+pkgver=4.0.4
 pkgrel=1
 pkgdesc="Misc. differently licensed stuff for Unity"
 depends=('clutter' 'libuuid' 'gtk+2' 'gtk+3')
 groups=('ayatana-extra')
 archs=('i686' 'x86_64')
 Finclude launchpad
-sha1sums=('979c943b6328fe14e6e6694a273603cb7af4b676')
+sha1sums=('48ac76105786e33fdc679f262933d49d44f08040')
