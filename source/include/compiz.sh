@@ -32,7 +32,7 @@
 # to declare the real version
 ###
 
-compizver=0.9.4
+compizver=0.9.5.0
 
 if [ -z "$_F_compiz_name" ]; then
 	_F_compiz_name=$pkgname
