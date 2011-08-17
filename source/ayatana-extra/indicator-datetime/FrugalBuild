@@ -2,7 +2,7 @@
 # Maintainer: Devil505 <devil505linux@gmail.com>
 
 pkgname=indicator-datetime
-pkgver=0.2.91
+pkgver=0.2.92
 pkgrel=1
 pkgdesc="The Date and Time Indicator"
 url="https://launchpad.net/indicator-datetime"
@@ -14,7 +14,7 @@ archs=('i686' 'x86_64')
 _F_gnome_glib="y"
 _F_launchpad_branch="0.3"
 Finclude launchpad gnome-scriptlet
-sha1sums=('e2c2c5ea860958b24ede322224c5d3379686b033')
+sha1sums=('152e3d7be1a911201a5f0b5bcc23caba7971587d')
 
 build() {
     Fcd
@@ -25,3 +25,5 @@ build() {
     Fbuild_gnome_scriptlet
 }
 
+
+# optimization OK
