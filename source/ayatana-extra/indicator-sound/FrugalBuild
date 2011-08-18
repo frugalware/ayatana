@@ -2,19 +2,19 @@
 # Maintainer: Devil505 <devil505linux@gmail.com>
 
 pkgname=indicator-sound
-pkgver=0.7.4.1
+pkgver=0.7.6
 pkgrel=1
 pkgdesc="A unified sound menu"
 depends=('pulseaudio' 'libdbusmenu-gtk>=0.3.98-3' 'libindicator>=0.3.19' 'dconf' 'libuuid' \
-    'ido>=0.2.0' 'libindicate>=0.4.93' 'libgee' 'glib2>=2.28.1-2' 'libnotify>=0.7.1')
+    'ido>=0.2.0' 'libindicate>=0.5.91' 'libgee' 'glib2>=2.28.1-2' 'libnotify>=0.7.1')
 makedepends=('intltool'  'vala' 'gconf')
 groups=('ayatana-extra')
 archs=('i686' 'x86_64')
 _F_gnome_glib="y"
 _F_launchpad_branch="fourth"
-_F_launchpad_subdir="0.7.4"
+_F_launchpad_subdir="0.7.6"
 Finclude launchpad gnome-scriptlet
-sha1sums=('9d863f2b3523883be676e8adefbb419b519835d3')
+sha1sums=('2c19f158495fa143973a553da33f2b9cef8e8c36')
 
 build() {
    Fcd
