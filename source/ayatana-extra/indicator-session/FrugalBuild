@@ -2,15 +2,15 @@
 # Maintainer: Devil505 <devil505linux@gmail.com>
 
 pkgname=indicator-session
-pkgver=0.3.0
+pkgver=0.3.1
 pkgrel=1
 pkgdesc="An indicator showing session management, status and user switching."
-depends=('libdbusmenu-gtk>=0.4.90' 'libindicator>=0.3.91' 'gconf')
+depends=('libdbusmenu-gtk>=0.4.90' 'libindicator>=0.3.91' 'gconf' 'libgudev')
 makedepends=('intltool')
 groups=('ayatana-extra')
 archs=('i686' 'x86_64')
 _F_gnome_schemas=('/etc/gconf/schemas/indicator-session.schemas')
 _F_launchpad_branch="0.3"
 Finclude launchpad gnome-scriptlet
-sha1sums=('9c1e564699fcadd8ba7d937485cb03c8ae177218')
+sha1sums=('6ea098491ae2cb7e8c5503da56c39ef2539da647')
 
