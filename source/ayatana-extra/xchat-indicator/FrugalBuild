@@ -2,8 +2,8 @@
 # Maintainer: Devil505 <devil505linux@gmail.com>
 
 pkgname=xchat-indicator
-pkgver=0.3.8
-pkgrel=2
+pkgver=0.3.10
+pkgrel=1
 pkgdesc="Plugin to make XChat use the messaging indicator"
 url="https://launchpad.net/xchat-indicator"
 depends=('libindicate>=0.4.93-2' 'xchat' 'libunity>=3.8.4')
@@ -12,7 +12,7 @@ archs=('i686' 'x86_64')
 up2date="Flasttar $url"
 source=($url/trunk/$pkgver/+download/$pkgname-$pkgver.tar.gz)
 Fconfopts="${Fconfopts[@]} --disable-static"
-sha1sums=('3c116be6166963b8a636f3107761c4d4a5885eab')
+sha1sums=('dfee076b1870b5162a3c0db58c92b048e173a82a')
 
 subpkgs=("${subpkgs[@]}" "xchat-gnome-indicator")
 subdescs=("${subdescs[@]}" "Plugin to make XChat-Gnome use the messaging indicator")
