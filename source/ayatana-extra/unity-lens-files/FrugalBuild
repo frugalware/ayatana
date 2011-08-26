@@ -1,0 +1,13 @@
+# Compiling Time: 0.03 SBU
+# Maintainer: Devil505 <devil505linux@gmail.com>
+
+pkgname=unity-lens-files
+pkgver=0.6.2
+pkgrel=1
+pkgdesc="A daemon exposing your files and file history to Unity"
+depends=('libzeitgeist>=0.3.7' 'libunity>=3.6.3' 'zeitgeist-extensions')
+makedepends=('vala>=0.11.3' 'intltool')
+groups=('ayatana-extra')
+archs=('i686' 'x86_64')
+Finclude launchpad
+sha1sums=('1760ac41164dcfb93379e391b27297dedd70333f')
