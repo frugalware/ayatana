@@ -2,13 +2,13 @@
 # Maintainer: Devil505 <devil505linux@gmail.com>
 
 pkgname=nux
-pkgver=1.2.2
+pkgver=1.4.0
 pkgrel=1
 pkgdesc="An OpenGL toolkit (for Unity)"
 url="https://launchpad.net/nux"
 depends=('dbus-sharp-glib' 'gnome-desktop-sharp' 'gnome-keyring-sharp' \
-         'mono-addins' 'xdg-utils' 'glib2' 'gdk-pixbuf2' 'glewmx' 'libsigc++2' \
-         'gmock' 'libboost-static' 'libsigc++2')
+         'mono-addins' 'xdg-utils' 'glib2' 'gdk-pixbuf2' 'glewmx' 'libsigc++2>=2.2.10' \
+         'gmock' 'libboost-static')
 makedepends=('boost')
 _F_mono_aot=0
 _F_launchpad_ext=".tar.gz"
@@ -16,6 +16,6 @@ _F_launchpad_branch="1.0"
 Finclude mono launchpad
 groups=('ayatana-extra')
 archs=('i686' 'x86_64')
-sha1sums=('36843587b936e734c93b0cc2a41bc7ff18991637')
+sha1sums=('167481a2ae4425094ed1ee9df3993e4b66b133ee')
 
 # optimization OK
