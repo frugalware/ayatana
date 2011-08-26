@@ -2,20 +2,24 @@
 # Maintainer: Devil505 <devil505linux@gmail.com>
 
 pkgname=gwibber
-pkgver=3.1.0
+pkgver=3.1.6
 pkgrel=1
 pkgdesc="Open Source microblogging client for GNOME, with webkit"
-depends=('python-simplejson' 'pygtk' 'dbus-python' 'pywebkitgtk>=1.1.6-2' 'gnome-python-desktop-wnck' \
-	'gnome-python' 'egenix-mx-base' 'feedparser' 'mako' 'gnome-python-desktop' 'python-sqlite3' \
-	'notify-python' 'imaging' 'aspell' 'pycurl' 'python-markupsafe' 'pyxdg' 'python-oauth' \
-	'gnome-python-desktop-keyring' 'python-sqlite3' 'ca-certificates')
-makedepends=('distribute' 'python-distutils-extra' 'intltool')
+depends=('libgee' 'libnotify' 'libdee' 'json-glib' 'gtkspell' 'desktop-file-utils' 'dbus-python' \
+         'gnome-keyring' 'gnome-python-desktop-keyring' 'libwnck' 'egenix-mx-base' \
+         'python-oauth' 'imaging' 'pycurl' 'python-simplejson' 'pywebkitgtk' 'pyxdg' \
+         'gnome-python-extras-gtkspell' 'notify-python' 'gsettings-desktop-schemas' \
+         'libunity')
+makedepends=('vala' 'intltool' 'gobject-introspection')
 options=('scriptlet')
 groups=('gnome-extra')
 _F_gnome_desktop="y"
+_F_gnome_iconcache="y"
 _F_launchpad_branch="3.2"
 Finclude gnome-scriptlet launchpad
 archs=('i686' 'x86_64')
-sha1sums=('cd4f835866d4f4185529ca06842d52e763f0d8ac')
+sha1sums=('f6a6b0dc767a60c1f364d6f4961387fa36af539b')
 replaces=('twitux')
 
+
+# optimization OK
