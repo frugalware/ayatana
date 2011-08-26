@@ -1,0 +1,23 @@
+# Compiling Time: 0.02 SBU
+# Maintainer: Devil505 <devil505linux@gmail.com>
+
+pkgname=dconf-qt
+pkgver=0.0.0.110722
+pkgrel=1
+pkgdesc="Qt and QML bindings for dconf"
+depends=('libqtdbus>=4.7.3-4' 'dconf' 'bzip2' 'libuuid' 'libqtdeclarative' 'libqtsql' 'libqtxmlpatterns')
+groups=('ayatana-extra')
+archs=('i686' 'x86_64')
+_F_launchpad_dirname="dconf-qt"
+Finclude cmake launchpad
+Fpkgversep="_"
+up2date="Flasttar https://launchpad.net/ubuntu/oneiric/+source/$pkgname | sed 's/.orig//g'"
+source=(https://launchpad.net/ubuntu/oneiric/+source/$pkgname/$pkgver-0ubuntu3/+files/$pkgname$Fpkgversep$pkgver.orig.tar.bz2 \
+        01_fix_pc_generation.patch \
+        02_link_again_dconf_dbus.patch)
+_F_cd_path="lib$pkgname-0.0.0"
+sha1sums=('a21bd9375811ed386299e1705c4db0a39bc31ac7' \
+          '41ada1bbe0a89c074b9d3a30a7a1058bedf49747' \
+          '7f73f6405ae19c34e728a8ea31c6ad677c734f11')
+
+# optimization OK
