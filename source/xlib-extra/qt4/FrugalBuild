@@ -507,6 +507,7 @@ build()
 
 	Fcd
 	Fpatchall
+	cp src/gui/widgets/qabstractmenubarimpl_p.h include/QtGui/private/ || Fdie
 
 	## REALLY DO NOT REMOVE THESE NOR THE frugalware.patch _WE_ DO WANT TO BUILD WITH
 	## fw LD/C/CXX FLAGS and fw PATHS right ? we do not have /usr/X11R.. NOR DO WE
