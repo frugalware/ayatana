@@ -1,0 +1,13 @@
+# Compiling Time: 0.03 SBU
+# Maintainer: Devil505 <devil505linux@gmail.com>
+
+pkgname=unity-lens-applications
+pkgver=0.4.2
+pkgrel=1
+pkgdesc="A daemon that exposes you applications with their usage statistics and status to Unity"
+depends=('gconf' 'libzeitgeist>=0.3.8' 'libunity>=4.0' 'gnome-menus' 'zeitgeist-extensions')
+makedepends=('vala>=0.11.3' 'intltool')
+groups=('ayatana-extra')
+archs=('i686' 'x86_64')
+Finclude launchpad
+sha1sums=('6a0e45faa855ad1023a6488cbf7509fc5588be38')
