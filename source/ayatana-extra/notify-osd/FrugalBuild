@@ -2,7 +2,7 @@
 # Maintainer: Devil505 <devil505linux@gmail.com>
 
 pkgname=notify-osd
-pkgver=0.9.31
+pkgver=0.9.32
 pkgrel=1
 pkgdesc="Canonical's on-screen-display notification agent"
 depends=('gconf' 'libwnck' 'libnotify>=0.7.0')
@@ -12,5 +12,5 @@ up2date="Flasttar $url"
 _F_gnome_iconcache="y"
 _F_launchpad_branch="oneiric"
 Finclude gnome-scriptlet launchpad
-sha1sums=('f7bcb11e6bef55c0d0b79a9e2eb8ebbe360143e0')
+sha1sums=('bb402d8f7dabf1b981a2bbde17886ce9813b3c13')
 
