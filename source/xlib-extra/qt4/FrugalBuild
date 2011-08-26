@@ -7,7 +7,7 @@ USE_DETECTDEPENDS=${USE_DETECTDEPENDS:-"n"}
 pkgname=qt4
 _F_archive_name=qt-everywhere-opensource-src
 pkgver=4.7.3
-pkgrel=4
+pkgrel=5
 pkgdesc="The QT4 GUI toolkit."
 url="http://qt.nokia.com/products/"
 depends=()
@@ -21,11 +21,21 @@ options=('scriptlet' 'nodocs')
 _F_archive_grepv="-tp"
 up2date="Flasttar ftp://ftp.qt.nokia.com/qt/source/"
 source=(ftp://ftp.qt.nokia.com/qt/source/$_F_archive_name-$pkgver.tar.gz \
+        qtbug-16292.patch \
+        14_systemtrayicon.diff \
+        15_appmenu.diff \
         16_qt-designer-toplevel-mode-menubar.diff \
+        26_dbusconnection_pointer.diff \
+        27_dbus_signal_filter_passes_not_handled.diff \
 	frugalware.patch \
 	fix-config.tests.patch)
 sha1sums=('765eb70d9779f93fefddddda5e6ddb33f4c0b71e' \
+          'ec8607cca4b4f71f6fab7309fd59f059f47d5f52' \
+          'b13575e295829fa26ccaf6b11eafa394955ae073' \
+          'db49f3fb3b7711a61cc6009347e455ef4030e91f' \
           '2391d180dea337fd5230273e0f1adda43491cc19' \
+          '88c4b4c59718b237cebbff4925d8361d0c24db64' \
+          '95d384a06306b0f545c90364a12e4a70efc2f99d' \
           '8d65e6bff36eb0b3219d30101ea7d062504aaaf8' \
           'e2522839807839f1af77de7ccd4c9e8c7df4acd0')
 export LD_LIBRARY_PATH=$Fsrcdir/$_F_archive_name-$pkgver/lib:${LD_LIBRARY_PATH}
