@@ -2,7 +2,7 @@
 # Maintainer: Devil505 <devil505linux@gmail.com>
 
 pkgname=overlay-scrollbar
-pkgver=0.2.9
+pkgver=0.2.11
 pkgrel=1
 pkgdesc="Ayatana Scrollbars use an overlay to ensure that scrollbars take up no active screen real-estate."
 depends=('gtk+2' 'gtk+3' 'cairo')
@@ -11,5 +11,5 @@ _F_launchpad_branch="0.2"
 Finclude launchpad
 groups=('ayatana-extra')
 archs=('i686' 'x86_64')
-sha1sums=('fa04d1b0493f4dbf89f796bd612f1e04aaf3bcc8')
+sha1sums=('24366a6083e3b8f8e2e2c1a2a97ab0e090e262f4')
 
