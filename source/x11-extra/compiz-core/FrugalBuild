@@ -2,7 +2,7 @@
 # Maintainer: Priyank Gosalia <priyankmg@gmail.com>
 
 pkgname=compiz-core
-pkgrel=5
+pkgrel=1
 depends=('libgl>=7.4.2-5' 'libglx>=1.6.1-7' 'libpng>=1.4.1' 'libxcomposite>=0.4.0-2' 'libxfixes>=4.0.3-4' 'libxdamage>=1.1.1-3' \
 	'libxrandr>=1.3.0' 'libxinerama>=1.0.3' 'libice>=1.0.5-2' 'libsm>=1.1.0' 'startup-notification>=0.9-3' \
 	'libxrender>=0.9.4-3' 'libxslt' 'dbus' 'mesa>=7.4.2-5' 'libboost>=1.46.1' 'glibmm')
@@ -13,9 +13,17 @@ provides=('compiz')
 groups=('x11-extra')
 archs=('i686' 'x86_64')
 Finclude compiz cmake
-source=(http://ftp.frugalware.org/pub/other/people/devil505/snapshots/$pkgname/$pkgname-$pkgver.tar.bz2)
+pkgver=0.9.5.94
+_ubuntu_ver="+bzr2803"
+source=(https://launchpad.net/ubuntu/+archive/primary/+files/compiz_$pkgver$_ubuntu_ver.orig.tar.gz \
+        unity.ini \
+        65compiz_profile-on-session \
+        compiz-decorator)
 
-sha1sums=('69283dbc335eb8fcacbace735eab97db3b3b2ffc')
+sha1sums=('59713cc1b3304ead9eb1c8e377d5476f101535e3' \
+          'c6405e44cbed2abd7ce2301d2dbe235772888b5d' \
+          '8c869f053dc328daf96b5e20de1a43fdca04aab1' \
+          'e34b3d7a60dc91b489c2629e100ee9776ece6903')
 _F_gnome_schemas=('etc/gconf/schemas/compiz-annotate.schemas' \
 	'etc/gconf/schemas/compiz-ini.schemas' \
 	'etc/gconf/schemas/compiz-blur.schemas' \
@@ -48,33 +56,61 @@ _F_gnome_schemas=('etc/gconf/schemas/compiz-annotate.schemas' \
 	'etc/gconf/schemas/compiz-zoom.schemas' \
 	'etc/gconf/schemas/compiz-imgsvg.schemas' \
 	'etc/gconf/schemas/gwd.schemas' )
+_F_gnome_glib="y"
 Finclude gnome-scriptlet
 unset install
 
-subpkgs=("compiz-gnome")
-subdescs=('Compiz for GNOME')
-subrodepends=("$pkgname=$pkgver")
-subdepends=("librsvg>=2.26.0-2 metacity>=2.34.0-3 gnome-control-center>=2.30.0 gconf>=2.28.1")
-subinstall=("$_F_gnome_scriptlet")
-subgroups=('gnome-extra')
-subarchs=('i686 x86_64')
-subreplaces=('gnome-compiz-manager')
+subpkgs=("${subpkgs[@]}" "compiz-gnome")
+subdescs=("${subdescs[@]}" "Compiz for GNOME")
+subdepends=("${subdepends[@]}" "librsvg>=2.26.0-2 metacity>=2.34.0-3 gnome-control-center>=2.30.0 gconf>=2.28.1")
+subrodepends=("${subrodepends[@]}" "$pkgname=$pkgver")
+subinstall=("${subinstall[@]}" "$_F_gnome_scriptlet")
+subgroups=("${subgroups[@]}" 'gnome-extra')
+subarchs=("${subarchs[@]}" 'i686 x86_64')
+subreplaces=("${subreplaces[@]}" 'gnome-compiz-manager')
+
+subpkgs=("${subpkgs[@]}" "compiz-unity")
+subdescs=("${subdescs[@]}" "Compiz stuff for Unity")
+subdepends=("${subdepends[@]}" "")
+subrodepends=("${subrodepends[@]}" "compiz-gnome=$pkgver")
+subinstall=("${subinstall[@]}" "")
+subgroups=("${subgroups[@]}" 'ayatana-extra')
+subarchs=("${subarchs[@]}" 'i686 x86_64')
+subreplaces=("${subreplaces[@]}" '')
 
 build() {
-	Fcd "core"
-	CMake_build -DCOMPIZ_BUILD_WITH_RPATH=FALSE -DCOMPIZ_DEFAULT_PLUGINS="core \
-	bailer detection composite opengl decor mousepoll vpswitch regex animation snap \
-	expo move compiztoolbox place grid imgpng gnomecompat wall ezoom workarounds \
-	staticswitcher resize fade scale session" -DCOMPIZ_PACKAGING_ENABLED=TRUE
-	make install DESTDIR=$Fdestdir || Fdie
-	Fmkdir usr/share/cmake-2.8/Modules
-	Ffilerel ../cmake/*.cmake usr/share/cmake-2.8/Modules/
-	Fmkdir etc/gconf/schemas
+        Fcd compiz-$pkgver
+        CMake_build
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCOMPIZ_DESTDIR="$Fdestdir" \
+    -DCOMPIZ_BUILD_WITH_RPATH=FALSE \
+    -DCOMPIZ_DEFAULT_PLUGINS="core bailer detection composite opengl decor mousepoll vpswitch regex animation snap expo move compiztoolbox place grid imgpng gnomecompat wall ezoom workarounds staticswitcher resize fade scale session" \
+    -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+    -DCOMPIZ_PACKAGING_ENABLED=TRUE \
+    -DUSE_GSETTINGS=OFF \
+    -DCOMPIZ_DISABLE_GS_SCHEMAS_INSTALL=ON \
+
+        Fmake
+
+  #unity_window_decorator's CMake install script ignores DESTDIR
+  sed -i "/INSTALL DESTINATION.*TYPE EXECUTABLE FILES/s@\(\${CMAKE_INSTALL_PREFIX}\)@$Fdestdir\1@" unity/unity_window_decorator/src/cmake_install.cmake || Fdie
+
+  make install DESTDIR=$Fdestdir || Fdie
+  cmake_dir=`cmake --system-information 2> /dev/null | grep "^CMAKE_ROOT " | sed -e 's/.*"\(.*\)"/\1/'`
+  mkdir -p "$Fdestdir${cmake_dir}/Modules" || Fdie
+  cp ../cmake/FindCompiz.cmake "$Fdestdir${cmake_dir}/Modules" || Fdie
+
+        Fmkdir etc/X11/Xsession.d
+        Fmkdir etc/compizconfig/
+
+        Fexe compiz-decorator usr/bin/compiz-decorator
+        Finstall 644 65compiz_profile-on-session etc/X11/Xsession.d/
+        Finstall 644 unity.ini etc/compizconfig/
+
+  	Fmkdir etc/gconf/schemas
 	Fmv usr/share/gconf/schemas/*.schemas etc/gconf/schemas/
 	Frm usr/share/gconf/
-	Fsplit compiz-gnome usr/bin/gtk-window-decorator
-	Fsplit compiz-gnome usr/bin/unity-window-decorator
-	Fexerel ../debian/compiz-decorator usr/bin/compiz-decorator
+
 	Fsplit compiz-gnome etc/gconf/schemas/compiz-annotate.schemas
 	Fsplit compiz-gnome etc/gconf/schemas/compiz-ini.schemas
 	Fsplit compiz-gnome etc/gconf/schemas/compiz-blur.schemas
@@ -109,8 +145,11 @@ build() {
 	Fsplit compiz-gnome etc/gconf/schemas/compiz-bailer.schemas
 	Fsplit compiz-gnome etc/gconf/schemas/compiz-detection.schemas
 	Fsplit compiz-gnome etc/gconf/schemas/compiz-debugspew.schemas
-	Fsplit compiz-gnome etc/gconf/schemas/compiz-grid.schemas
 
+	Fsplit compiz-unity usr/bin/unity-window-decorator
+	Fsplit compiz-unity etc/X11/Xsession.d/65compiz_profile-on-session
+	Fsplit compiz-unity etc/compizconfig/unity.ini
+        Frm /var
 	Fbuild_gnome_scriptlet
 }
 
