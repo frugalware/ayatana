@@ -1,25 +1,26 @@
 # Compiling Time: 0.01 SBU
-# Maintainer: Priyank Gosalia <priyankmg@gmail.com>
+# Maintainer: Devil505 <devil505linux@gmail.com>
+# Contributor: Priyank Gosalia <priyankmg@gmail.com>
 
 pkgname=ccsm
-_F_compiz_name=compiz-$pkgname
 Finclude compiz
-pkgrel=2
+pkgrel=1
 pkgdesc="CompizConfig settings manager"
 makedepends=('intltool')
-rodepends=('pygtk>=2.16.0-5' 'compizconfig-python>=0.9.4')
+rodepends=('pygtk>=2.16.0-5' 'compizconfig-python>=0.9.5.92')
 groups=('gnome-extra')
 replaces=('gset-compiz' 'gnome-compiz-manager')
 archs=('i686' 'x86_64')
 _F_gnome_iconcache=y
+_F_gnome_desktop=y
 Finclude gnome-scriptlet
-sha1sums=('bb185bb0817a4308abbe48e2e08edbc6531e276a')
-_F_cd_path="$pkgname"
+sha1sums=('f80e2ff52b17a678344d1b679f89754767cbfe17')
 
 build()
 {
 	Fcd
-	python setup.py install --root=$Fdestdir --prefix=/usr
-	Fbuild_gnome_scriptlet
+	python setup.py install --root=$Fdestdir --prefix=/usr || Fdie
+        Finstallrel 644 ${pkgname%-*}.desktop usr/share/applications/
+        Fbuild_gnome_scriptlet
 }
 
