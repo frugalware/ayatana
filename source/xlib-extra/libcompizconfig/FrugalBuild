@@ -1,32 +1,56 @@
 # Compiling Time: 0.09 SBU
-# Maintainer: Priyank Gosalia <priyankmg@gmail.com>
+# Maintainer: Devil505 <devil505linux@gmail.com>
+# Contributor: Priyank Gosalia <priyankmg@gmail.com>
 
 pkgname=libcompizconfig
-_F_compiz_name=compiz-$pkgname
 Finclude compiz cmake
-pkgrel=2
+pkgrel=1
 pkgdesc="Compiz configuration system library"
-depends=('libxml2' 'compiz-core=>0.9.4' 'libboost=>1.46.1')
+depends=('libxml2' 'compiz-core>=0.9.5' 'libboost>=1.46.1' 'protobuf' 'gtk+3')
 makedepends=('perl-xml-parser' 'intltool' 'cmake' 'boost')
 groups=('xlib-extra')
 archs=('i686' 'x86_64')
 url="http://www.compiz-fusion.org/"
 _F_gnome_schemas=('etc/gconf/schemas/compiz-cpp.schemas')
 Finclude gnome-scriptlet
-sha1sums=('f04d5b400771e29c5c198ebe1e6be41f9635297f')
+source=($source 01_add_transitionning.patch \
+        02_add_unity_profile.patch \
+        normal.profile \
+        extra.profile)
+sha1sums=('941dc96f740e80cfd7c962b119837c4d8fbd42a1' \
+          '5c9bf5ad13e34ac30e4eb318c24ce1a4e6064fe6' \
+          '3b5f86a9343394f13744845adaf90eb37b6b5355' \
+          'b386348a486ae6b2e506fe3a6a2999f9c8d5971f' \
+          '6b4e3df2792d19e6b51c8addc2963aca72816f65')
 
 build() {
-	Fcd $pkgname
-	CMake_build
-	make install DESTDIR=$Fdestdir || Fdie
-	Fmkdir usr/share/cmake-2.8/Modules
-	Ffilerel ../cmake/LibCompizConfigCommon.cmake usr/share/cmake-2.8/Modules/LibCompizConfigCommon
-	Ffilerel ../cmake/FindCompizConfig.cmake usr/share/cmake-2.8/Modules/FindCompizConfig.cmake
+	Fcd
+	  [[ -d build ]] || mkdir build
+  cd build
+  env PKG_CONFIG_PATH="/usr/lib/pkgconfig:$PKG_CONFIG_PATH" \
+  cmake .. \
+    -DCMAKE_BUILD_WITH_RPATH=FALSE \
+    -DCOMPIZ_PACKAGING_ENABLED=TRUE \
+    -DCOMPIZ_PLUGIN_INSTALL_TYPE=package \
+    -DUSE_GSETTINGS=OFF \
+    -DCOMPIZ_DISABLE_GS_SCHEMAS_INSTALL=ON \
+    -DCMAKE_BUILD_TYPE="Release" \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCOMPIZ_DESTDIR="$Fdestdir"
+  make || Fdie
+  make install || Fdie
+  make findcompizconfig_install || Fdie
+
 	Fmkdir etc/gconf/schemas
 	Fmv /usr/share/gconf/schemas/compiz-ccp.schemas /etc/gconf/schemas/compiz-cpp.schemas
 	Frm usr/share/gconf/
 	Fbuild_gnome_scriptlet
-}
 
+	Fmkdir usr/share/compizconfig
+	Fmkdir etc/compizconfig
+        Finstall 644 normal.profile usr/share/compizconfig/
+        Finstall 644 extra.profile usr/share/compizconfig/
+        Finstallrel 644 ../config/config etc/compizconfig/
+}
 
 # optimization OK

@@ -1,0 +1,15 @@
+Index: libcompizconfig-0.9.2.1/config/config
+===================================================================
+--- libcompizconfig-0.9.2.1.orig/config/config	2010-11-24 19:23:54.820214002 +0100
++++ libcompizconfig-0.9.2.1/config/config	2010-11-24 19:23:57.328214001 +0100
+@@ -17,5 +17,9 @@
+ backend = ini
+ plugin_list_autosort = true
+ 
+-
++[general_ubuntu]
++backend = gconf
++integration = true
++plugin_list_autosort = true
++profile = unity
+ 

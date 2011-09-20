@@ -1,0 +1,576 @@
+From 71bd42bc75dcbff21a361b961cea08462cb51c3c Mon Sep 17 00:00:00 2001
+From: Sam Spilsbury <sam.spilsbury@canonical.com>
+Date: Mon, 29 Nov 2010 15:24:05 +0800
+Subject: [PATCH] transition module
+
+---
+ backend/CMakeLists.txt         |    4 +-
+ backend/src/ini.c              |   14 +-
+ backend/src/transition.h       |    1 +
+ backend/src/transition_ini.cpp |  478 ++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 492 insertions(+), 5 deletions(-)
+ create mode 100644 backend/src/transition.h
+ create mode 100644 backend/src/transition_ini.cpp
+
+diff --git a/backend/CMakeLists.txt b/backend/CMakeLists.txt
+index a012ee4..79a1194 100644
+--- a/backend/CMakeLists.txt
++++ b/backend/CMakeLists.txt
+@@ -2,4 +2,6 @@ include (LibCompizConfigCommon)
+ 
+ set (_COMPIZCONFIG_INTERNAL true)
+ 
+-compizconfig_backend (ini)
++find_package (Boost 1.34.0 REQUIRED)
++
++compizconfig_backend (ini PKGDEPS gio-2.0 INCDIRS ${Boost_INCLUDE_DIRS} LIBRARIES ${Boost_LIBRARIES})
+diff --git a/backend/src/ini.c b/backend/src/ini.c
+index a65e23b..395253c 100644
+--- a/backend/src/ini.c
++++ b/backend/src/ini.c
+@@ -37,6 +37,10 @@
+ #include <X11/X.h>
+ #include <X11/Xlib.h>
+ 
++#include <gio/gio.h>
++
++#include "transition.h"
++
+ #define DEFAULTPROF "Default"
+ #define SETTINGPATH "compiz-1/compizconfig"
+ 
+@@ -180,6 +184,8 @@ initBackend (CCSContext * context)
+ {
+     IniPrivData *newData;
+ 
++    do_transition ();
++
+     privData = realloc (privData, (privDataSize + 1) * sizeof (IniPrivData));
+     newData = privData + privDataSize;
+ 
+@@ -637,7 +643,7 @@ scanConfigDir (char * filePath)
+     }
+ 
+     free (nameList);
+-    
++
+     return ret;
+ }
+ 
+@@ -648,19 +654,19 @@ getExistingProfiles (CCSContext * context)
+     char	   *filePath = NULL;
+     char           *homeDir = NULL;
+     char	   *configDir = NULL;
+-    
++
+     configDir = getenv ("XDG_CONFIG_HOME");
+     if (configDir && strlen (configDir))
+     {
+ 	asprintf (&filePath, "%s/%s", configDir, SETTINGPATH);
+-	
++
+ 	ret = scanConfigDir(filePath);
+ 	free(filePath);
+ 
+ 	if (ret)
+ 	    return ret;
+     }
+-    
++
+     homeDir = getenv ("HOME");
+     if (!homeDir)
+ 	return NULL;
+diff --git a/backend/src/transition.h b/backend/src/transition.h
+new file mode 100644
+index 0000000..7c24bcb
+--- /dev/null
++++ b/backend/src/transition.h
+@@ -0,0 +1 @@
++void do_transition ();
+diff --git a/backend/src/transition_ini.cpp b/backend/src/transition_ini.cpp
+new file mode 100644
+index 0000000..1d5d7e7
+--- /dev/null
++++ b/backend/src/transition_ini.cpp
+@@ -0,0 +1,478 @@
++/*
++ * compiz-transition.cpp
++ *
++ * A small executable to be run at first launch which moves
++ * old settings paths to new ones so that the user's settings
++ * are preserved
++ *
++ * Copyright (C) 2010 Canonical Ltd
++ *
++ * GConf Backend code taken from compizconfig-backend-gconf:
++ * Copyright (c) 2007 Danny Baumann <maniac@opencompositing.org>
++ *
++ * Parts of this code are taken from libberylsettings
++ * gconf backend, written by:
++ *
++ * Copyright (c) 2006 Robert Carr <racarr@opencompositing.org>
++ * Copyright (c) 2007 Dennis Kasprzyk <onestone@opencompositing.org>
++ *
++ * Licence Terms:
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * as published by the Free Software Foundation; either version 2
++ * of the License, or (at your option) any later version.
++ *
++ * This program is free software: you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 3 as
++ * published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
++ *
++ * Authored by: Sam Spilsbury <sam.spilsbury@canonical.com>
++ */
++
++#include <iostream>
++#include <fstream>
++#include <sstream>
++#include <gio/gio.h>
++#include <boost/foreach.hpp>
++#include <boost/algorithm/string.hpp>
++#include <cstring>
++#include <cstdio>
++#include <list>
++
++using namespace std;
++
++void move_dir_recursively (GFile *from, GFile *to)
++{
++    GFileEnumerator *enumerator;
++    GFileInfo	    *current_info;
++    GFileQueryInfoFlags q_flags;
++    GFileCopyFlags	c_flags;
++
++    memset (&q_flags, sizeof (GFileCopyFlags), 0);
++    memset (&c_flags, sizeof (GFileCopyFlags), 0);
++
++    /* First of all ensure that the dir that we want to copy to actually exists */
++
++    g_file_make_directory_with_parents (to, NULL, NULL);
++
++    enumerator = g_file_enumerate_children (from, "*", q_flags, NULL, NULL);
++    current_info = g_file_enumerator_next_file (enumerator, NULL, NULL);
++
++    while (current_info)
++    {
++	GFile *nfrom = g_file_new_for_path (string (string (g_file_get_path (from)) + "/" + g_file_info_get_edit_name (current_info)).c_str ());
++	GFile *nto = g_file_new_for_path (string (string (g_file_get_path (to)) + "/" + g_file_info_get_edit_name (current_info)).c_str ());
++	/* Recursively copy subdirectories */
++	if (g_file_info_get_file_type (current_info) == G_FILE_TYPE_DIRECTORY)
++	{
++	    cout << "[LOG]: Copying subdirectory from " << string (g_file_get_path (nfrom)) << " to " << string (g_file_get_path (nto)) << endl;
++
++	    move_dir_recursively (nfrom, nto);
++	    g_file_delete (nfrom, NULL, NULL);
++
++	    current_info = g_file_enumerator_next_file (enumerator, NULL, NULL);
++	    continue;
++	}
++
++	cout << "[LOG]: Copied file " << string (g_file_get_path (nfrom)) << " to " << string (g_file_get_path (nto)) << endl;
++
++	g_file_copy (nfrom, nto, c_flags, NULL, NULL, NULL, NULL);
++	g_file_delete (nfrom, NULL, NULL);
++
++	g_object_unref (current_info);
++	g_object_unref (nfrom);
++	g_object_unref (nto);
++
++	current_info = g_file_enumerator_next_file (enumerator, NULL, NULL);
++    }
++
++    g_object_unref (enumerator);
++}
++
++bool move_internal_dirs (void)
++{
++    char *homedir = getenv ("HOME");
++    char old_dir[512], new_dir[512];
++    GFile *old_dir_p, *new_dir_p;
++
++    snprintf (old_dir, sizeof (old_dir), "%s/.compiz", homedir);
++    snprintf (new_dir, sizeof (new_dir), "%s/.compiz-1", homedir);
++
++    old_dir_p = g_file_new_for_path (old_dir);
++    new_dir_p = g_file_new_for_path (new_dir);
++
++    move_dir_recursively (old_dir_p, new_dir_p);
++    g_file_delete (old_dir_p, NULL, NULL);
++
++    g_object_unref (old_dir_p);
++    g_object_unref (new_dir_p);
++
++    return true;
++}
++
++bool
++move_ini_setting (list <string> & lines, string setting, string old_plugin, string new_plugin)
++{
++    list <string>::iterator  old_plugin_begin (lines.end ());
++    list <string>::iterator  old_plugin_end (lines.end ());
++    list <string>::iterator  new_plugin_begin (lines.end ());
++    list <string>::iterator  new_plugin_end (lines.end ());
++    string ini_setting_name;
++
++    for (list<string>::iterator it = lines.begin (); it != lines.end ();
++	 it++)
++    {
++	if (it->find ("[" + old_plugin + "]") != string::npos &&
++	    old_plugin_begin == lines.end ())
++	{
++	    old_plugin_begin = it;
++	    continue;
++	}
++
++	if (old_plugin_begin != lines.end () && it->find ("[") != string::npos)
++	{
++	    old_plugin_end = it;
++	    break;
++	}
++    }
++
++    /* Couldn't find old_plugin, so just return false */
++    if (old_plugin_begin == lines.end ())
++    {
++	cout << "[LOG]: Could not find plugin " << old_plugin << " settings, skipping" << endl;
++	return false;
++    }
++
++    for (list<string>::iterator it = lines.begin (); it != lines.end ();
++	 it++)
++    {
++	if (it->find ("[" + new_plugin + "]") != string::npos &&
++	    new_plugin_begin == lines.end ())
++	{
++	    new_plugin_begin = it;
++	    continue;
++	}
++
++	if (new_plugin_begin != lines.end () && it->find ("[") != string::npos)
++	{
++	    new_plugin_end = it;
++	    break;
++	}
++    }
++
++    /* No new plugin section found in the ini file, so create it */
++    if (new_plugin_begin == lines.end ())
++    {
++	cout << "[LOG]: Adding new plugin [" << new_plugin << "] to config" << endl;
++	lines.push_back ("");
++	lines.push_back ("[" + new_plugin + "]");
++	new_plugin_begin = lines.end ();
++	new_plugin_end = lines.end ();
++    }
++
++    for (list <string>::iterator it = old_plugin_begin; it != old_plugin_end; it++)
++    {
++	if (it->find (setting) != string::npos)
++	{
++	    ini_setting_name = (*it);
++	    lines.erase (it);
++	    break;
++	}
++    }
++
++    lines.insert (new_plugin_end, ini_setting_name);
++
++    return true;
++}
++
++bool convert_ini_file (string ini_file_path)
++{
++    ifstream fp;
++    ofstream ofp;
++    char     *buffer;
++    int	     length;
++    string   data;
++    list <string> lines;
++
++    cout << "[LOG]: Opening file " << ini_file_path << endl;
++
++    fp.open (ini_file_path.c_str ());
++
++    if (!fp.is_open ())
++    {
++	cout << "[WARNING]: Unable to open file " << ini_file_path << endl;
++	return false;
++    }
++
++    fp.seekg (0, ios::end);
++    length = fp.tellg ();
++    length++;
++    fp.seekg (0, ios::beg);
++
++    buffer = new char [length];
++
++    fp.read (buffer, length - 1);
++    buffer[length -1] = '\0';
++    fp.close ();
++
++    data = buffer;
++
++    delete[] buffer;
++
++    boost::split (lines, data, boost::is_any_of ("\n"));
++
++    cout << "[LOG] 0.8.6 configuration file data is: " << endl << endl;
++
++    BOOST_FOREACH (string &l, lines)
++    {
++	cout << l << endl;
++    }
++
++    BOOST_FOREACH (string &l, lines)
++    {
++	size_t pos = 0;
++
++	/* Find and replace decoration with decor */
++	if ((pos = l.find ("decoration", pos)) != string::npos)
++	{
++	    cout << "[LOG]: Transitioning decoration -> decor" << endl;
++	    l.erase (pos, 10);
++	    l.insert (pos, "decor");
++	}
++
++	pos = 0;
++
++	/* Find and replace png, svg, jpeg with img* */
++	if ((pos = l.find (";png", pos)) != string::npos)
++	{
++	    cout << "[LOG]: Transitioning png -> imgpng" << endl;
++	    l.erase (pos, 4);
++	    l.insert (pos, ";imgpng");
++	}
++
++	pos = 0;
++
++	if ((pos = l.find (";svg", pos)) != string::npos)
++	{
++	    cout << "[LOG]: Transitioning svg -> imgsvg" << endl;
++	    l.erase (pos, 4);
++	    l.insert (pos, ";imgsvg");
++	}
++
++	pos = 0;
++
++	if ((pos = l.find (";jpeg", pos)) != string::npos)
++	{
++	    cout << "[LOG]: Transitioning decoration -> decor" << endl;
++	    l.erase (pos, 4);
++	    l.insert (pos, ";imgjpeg");
++	}
++
++	pos = 0;
++
++	/* Remove the glib plugin as it's incompatible with the glib branch */
++
++	if ((pos = l.find (";glib", pos)) != string::npos)
++	{
++	    cout << "[LOG]: Removing glib plugin" << endl;
++	    l.erase (pos, 4);
++	}
++
++	pos = 0;
++
++	/* Find and replace as_ with s0_ */
++	if ((pos = l.find ("as_", pos)) != string::npos)
++	{
++	    cout << "[LOG]: Transitioning display level setting " << l << " to screen one" << endl;
++	    l.erase (pos, 3);
++	    l.insert (pos, "s0_");
++	}
++
++	pos = 0;
++
++	/* Insert new plugins that we will load automatically */
++	if ((pos = l.find ("= core;", pos)) != string::npos)
++	{
++	    l.insert (pos + 7, "bailer;detection;composite;opengl;compiztoolbox;");
++	    cout << "[LOG]: New plugins list is " << l << endl;
++	}
++
++	pos = 0;
++
++    }
++
++    move_ini_setting (lines, "slow_animations_key", "core", "composite");
++    move_ini_setting (lines, "detect_refresh_rate", "core", "composite");
++    move_ini_setting (lines, "refresh_rate", "core", "composite");
++    move_ini_setting (lines, "unredirect_fullscreen_windows", "core", "composite");
++    move_ini_setting (lines, "force_independent_output_painting", "core", "composite");
++    move_ini_setting (lines, "texture_compression", "core", "opengl");
++    move_ini_setting (lines, "texture_filter", "core", "opengl");
++    move_ini_setting (lines, "lighting", "core", "opengl");
++    move_ini_setting (lines, "sync_to_vblank", "core", "opengl");
++
++    cout << "[LOG] 0.9.2.1 configuration file data is: " << endl;
++
++    BOOST_FOREACH (string &line, lines)
++    {
++	cout << line << endl;
++    }
++
++    cout << "[LOG]: Writing configuration data" << endl;
++
++    ofp.open (ini_file_path.c_str ());
++
++    if (!ofp.is_open ())
++    {
++	cout << "[LOG]: Error opening " << ini_file_path << " for writing!";
++	return false;
++    }
++    else
++    {
++	BOOST_FOREACH (string &line, lines)
++	{
++	    ofp << endl;
++	    ofp << line;
++	}
++    }
++
++    ofp.close ();
++
++    return true;
++}
++
++bool move_ini_files ()
++{
++    char *homedir = getenv ("HOME");
++    char old_dir[512], new_dir[512], profile_dir[512], old_profile_dir[512];
++
++    snprintf (old_dir, sizeof (old_dir), "%s/.config/compiz", homedir);
++    snprintf (new_dir, sizeof (new_dir), "%s/.config/compiz-1", homedir);
++    snprintf (profile_dir, sizeof (profile_dir), "%s/.config/compiz-1/compizconfig", homedir);
++    snprintf (old_profile_dir, sizeof (old_profile_dir), "%s/.config/compiz/compizconfig", homedir);
++
++    GFile *old_dir_p =  g_file_new_for_path (old_dir);
++    GFile *new_dir_p =  g_file_new_for_path (new_dir);
++    GFile *profile_dir_p =  g_file_new_for_path (profile_dir);
++    GFileCopyFlags flags;
++    GFileQueryInfoFlags qflags;
++
++    /* First ensure that we actually have a directory to put the files in */
++    g_file_make_directory_with_parents (profile_dir_p, NULL, NULL);
++
++    /* First copy out all of our settings from ~/.config/compiz/compizconfig */
++
++    move_dir_recursively (old_dir_p, new_dir_p);
++    g_file_delete (old_dir_p, NULL, NULL);
++
++    memset (&flags, sizeof (GFileCopyFlags), 0);
++    memset (&qflags, sizeof (GFileCopyFlags), 0);
++
++    if (g_file_query_exists (profile_dir_p, NULL))
++    {
++	memset (&flags, sizeof (GFileQueryInfoFlags), 0);
++
++	GFileEnumerator *enumerator =  g_file_enumerate_children (profile_dir_p, "*", qflags, NULL, NULL); 
++	GFileInfo	*info	    =  g_file_enumerator_next_file (enumerator, NULL, NULL);
++	cout << "[LOG]: Scanning directory " << string (profile_dir) << " for configuration files" << endl;
++
++	while (info)
++	{
++	    string c_name = string (g_file_info_get_edit_name (info));
++	    string c_path = string (profile_dir) + "/" + c_name;
++
++	    if (c_name == "config")
++	    {
++		g_object_unref (info);
++		info = g_file_enumerator_next_file (enumerator, NULL, NULL);
++		continue;
++	    }
++	    else if (c_name.find (".ini") != string::npos)
++	    {
++		cout << "[LOG]: Converting profile called " << c_name << endl;
++
++		if (!convert_ini_file (c_path))
++		    cout << "[WARNING]: Unable to convert profile " << c_name << endl;
++		else
++		    cout << "[LOG]: Successfully converted profile " << c_name << endl;
++	    }
++
++	    g_object_unref (info);
++
++	    info = g_file_enumerator_next_file (enumerator, NULL, NULL);
++	}
++
++	g_object_unref (enumerator);
++    }
++    else
++    {
++	cout << "[WARNING]: Could not find profiles directory!" << endl;
++	return false;
++    }
++
++    g_object_unref (old_dir_p);
++    g_object_unref (new_dir_p);
++
++    return true;
++}
++
++void transition_settings ()
++{
++    string   homedir = string (getenv ("HOME"));
++    GFile    *home_ini_path = g_file_new_for_path ((string (homedir) + string ("/.config/compiz/compizconfig/")).c_str ());
++    GFile    *home_internal_path = g_file_new_for_path ((string (homedir) + string ("/.compiz")).c_str ());
++
++    cout << endl << "Checking if settings need to be migrated ...";
++
++    if (g_file_query_exists (home_ini_path, NULL))
++    {
++	cout << "yes" << endl;
++	cout << "Compiz Migration Script for Ubuntu 11.04" << endl;
++	cout << "Moving settings from Compiz 0.8.6 to Compiz 0.9.4" << endl;
++
++	cout << "[LOG]: Moving and rewriting INI configuration files" << endl;
++
++	if (move_ini_files ())
++	    cout << "[LOG]: Successfully moved INI configuration files" << endl;
++	else
++	    cout << "[WARNING]: Could not rewrite and move all INI configuration files, your settings may be reset" << endl;
++    }
++    else
++	cout << "no" << endl;
++
++    cout << "Checking if internal files need to be migrated ...";
++
++    if (g_file_query_exists (home_internal_path, NULL))
++    {
++	cout << "yes" << endl;
++
++	cout << "[LOG]: Moving Internal Files" << endl;
++
++	if (move_internal_dirs ())
++	    cout << "[LOG]: Successfully moved internal files" << endl;
++	else
++	    cout << "[WARNING]: Could not move internal files" << endl;
++    }
++    else
++	cout << "no" << endl;
++
++    g_object_unref (home_ini_path);
++    g_object_unref (home_internal_path);
++}
++
++extern "C"
++{
++    void do_transition ()
++    {
++	g_type_init (); // glib I hate you
++	transition_settings ();
++    }
++}
+-- 
+1.7.1
+
