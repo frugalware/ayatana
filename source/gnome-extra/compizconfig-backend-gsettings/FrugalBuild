@@ -1,0 +1,20 @@
+# Compiling Time: 0.03 SBU
+# Maintainer: Devil505 <devil505linux@gmail.com>
+
+pkgname=compizconfig-backend-gsettings
+pkgrel=1
+pkgdesc="CompizConfig gsettings backend"
+depends=('libcompizconfig>=0.9.5.92'  'gconf' 'libuuid')
+groups=('gnome-extra')
+_F_gnome_glib="y"
+Finclude gnome-scriptlet
+archs=('i686' 'x86_64')
+Finclude compiz cmake
+sha1sums=('f84a47ff86ea7fdb5d73d45d428fef2e60162a43')
+
+build() {
+        CMake_build
+        Fbuild_gnome_scriptlet
+}
+
+# optimization OK
