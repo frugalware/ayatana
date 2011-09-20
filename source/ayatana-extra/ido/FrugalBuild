@@ -2,7 +2,7 @@
 # Maintainer: Devil505 <devil505linux@gmail.com>
 
 pkgname=ido
-pkgver=0.2.90
+pkgver=0.2.93
 pkgrel=1
 pkgdesc="Widgets and other objects used for indicators."
 url="http://launchpad.net/ido"
@@ -11,13 +11,7 @@ makedepends=('gnome-common' 'gtk-doc')
 options=('scriptlet')
 groups=('ayatana-extra')
 archs=('i686' 'x86_64')
-up2date="Flasttar $url"
-#source=(http://launchpad.net/${pkgname}/trunk/$pkgver/+download/$pkgname-$pkgver.tar.gz)
-source=(http://ftp.frugalware.org/pub/other/people/devil505/snapshots/$pkgname/$pkgname-$pkgver.tar.bz2)
-sha1sums=('635bfe7eaadff59be63b728705a55b72852d02a1')
+_F_launchpad_branch="0.3"
+Finclude launchpad
+sha1sums=('69a5f4627e5476362d4f9b7147815af2d9fca0f6')
 
-build() {
-        Fcd
-        ./autogen.sh || Fdie
-        Fbuild
-}
