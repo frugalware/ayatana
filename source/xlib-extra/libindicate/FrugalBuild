@@ -2,7 +2,7 @@
 # Maintainer: Devil505 <devil505linux@gmail.com>
 
 pkgname=libindicate
-pkgver=0.5.91
+pkgver=0.6.1
 pkgrel=1
 pkgdesc="A small library for applications to raise 'flags' on DBus for other components of the desktop to pick up and visualize."
 url="https://launchpad.net/libindicate"
@@ -14,7 +14,7 @@ groups=('xlib-extra')
 archs=('i686' 'x86_64' 'ppc')
 _F_launchpad_branch="0.6"
 Finclude launchpad
-sha1sums=('c7223353cb5a771e172e3ab095e5ebc8adc9b5dd')
+sha1sums=('c1cca4924f359cbd2ccc477f368938c80e3a83b7')
 
 subpkgs=("${subpkgs[@]}" "$pkgname-gtk")
 subdescs=("${subdescs[@]}" "GTK bindings for libindicate")
