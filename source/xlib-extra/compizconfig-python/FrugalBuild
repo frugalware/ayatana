@@ -1,19 +1,19 @@
 # Compiling Time: 0.05 SBU
-# Maintainer: Priyank Gosalia <priyankmg@gmail.com>
+# Maintainer: Devil505 <devil505linux@gmail.com>
+# Contributor: Priyank Gosalia <priyankmg@gmail.com>
 
 pkgname=compizconfig-python
-_F_compiz_name=compiz-$pkgname
 Finclude compiz
 pkgrel=1
 pkgdesc="Python bindings for libcompizconfig"
-depends=('libxml2>=2.7.8' 'python' 'pkgconfig' 'pyrex' 'libcompizconfig>=0.9.4' 'cython')
+depends=('libxml2>=2.7.8' 'python' 'pkgconfig' 'pyrex' 'libcompizconfig>=0.9.5.92' 'cython')
 groups=('xlib-extra')
 archs=('i686' 'x86_64')
-sha1sums=('8c003c3ea240ef38cc90839c1d1f680af303244d')
+sha1sums=('7be1cae6afdf30dd2e7038983536199c9bb06e8f')
 
 build()
 {
-	Fcd $pkgname
+	Fcd
 	python setup.py build || Fdie
 	python setup.py install --root="$Fdestdir" || Fdie
 }
