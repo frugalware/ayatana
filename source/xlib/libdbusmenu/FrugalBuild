@@ -2,7 +2,7 @@
 # Maintainer: Devil505 <devil505linux@gmail.com>
 
 pkgname=libdbusmenu
-pkgver=0.4.93
+pkgver=0.4.94
 pkgrel=1
 pkgdesc="A small little library that was created by pulling out some common code out of indicator-applet."
 depends=('json-glib>=0.13.4' 'dbus-glib')
@@ -13,7 +13,7 @@ archs=('i686' 'x86_64' 'ppc')
 _F_launchpad_dirname="dbusmenu"
 _F_launchpad_branch="0.5"
 Finclude launchpad
-sha1sums=('6457e9998a6fd797afa8ee277872b5d113284299')
+sha1sums=('480a53821f613768e7c370b4ca1cd85ffe00abe8')
 
 subpkgs=("$pkgname-gtk")
 subdescs=("${subdescs[@]}" "GTK bindings for libdbusmenu")
