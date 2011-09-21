@@ -2,16 +2,20 @@
 # Maintainer: Devil505 <devil505linux@gmail.com>
 
 pkgname=unity
-pkgver=4.2.0
+pkgver=4.16.0
 pkgrel=1
 pkgdesc="A desktop experience designed for efficiency of space and interaction"
 url="https://launchpad.net/unity/"
-depends=('compiz-gnome>=0.9.4-2' 'nux>=1.0.4' 'bamf>=0.2.92' 'libdee>=0.5.16' \
-        'libdbusmenu>=0.4.90' 'libindicator' 'libunity-misc' \
+depends=('compiz-unity>=0.9.4-2' 'nux>=1.10.0' 'bamf>=0.2.92' 'libdee>=0.5.20' \
+        'libdbusmenu>=0.4.90' 'libindicator' 'libunity-misc' 'libunity>=4.0.4' \
         'unity-asset-pool' 'compizconfig-backend-gconf' 'utouch-geis')
-makedepends=('cmake' 'vala' 'intltool' 'gobject-introspection' 'boost')
+makedepends=('cmake' 'vala' 'intltool' 'gobject-introspection' 'boost' 'doxygen')
 groups=('ayatana-extra')
-_F_cmake_confopts="-DCMAKE_BUILD_TYPE=Release -DCOMPIZ_PLUGIN_INSTALL_TYPE=package"
+_F_cmake_confopts="-DCOMPIZ_BUILD_WITH_RPATH=FALSE \
+        -DCOMPIZ_PACKAGING_ENABLED=TRUE \
+        -DCOMPIZ_PLUGIN_INSTALL_TYPE=package \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX=/usr"
 _F_gnome_glib="y"
 _F_gnome_schemas=('/etc/gconf/schemas/compiz-unitymtgrabhandles.schemas')
 _F_launchpad_ext=".tar.bz2"
@@ -19,11 +23,11 @@ _F_launchpad_branch="4.0"
 Finclude cmake gnome-scriptlet launchpad
 archs=('i686' 'x86_64')
 source=($source frugalware-icon.png $pkgname.desktop $pkgname.session)
-sha1sums=('e556f2d20ad306fb2389cafe591d0fa79bc83163' \
+sha1sums=('5db6d5a8bb70f07f1d2b9fad37c58a2fad491a1a' \
           '74be0bbad4cda0b411fb4f8e62c5fa401535aa8b' \
           '87515570912a71e38708e5ec1df2227fcf30128a' \
           '7527affeb3bcc0d815ea0fd18b86e235a3ab60df')
-
+unset MAKEFLAGS
 build() {
     CMake_build
 
