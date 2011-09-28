@@ -2,8 +2,8 @@
 # Maintainer: Devil505 <devil505linux@gmail.com>
 
 pkgname=gwibber
-pkgver=3.1.90
-pkgrel=2
+pkgver=3.1.92
+pkgrel=1
 pkgdesc="Open Source microblogging client for GNOME, with webkit"
 depends=('libgee' 'libnotify' 'libdee' 'json-glib' 'gtkspell' 'desktop-file-utils' 'dbus-python' \
          'gnome-keyring' 'gnome-python-desktop-keyring' 'libwnck' 'egenix-mx-base' \
@@ -19,7 +19,7 @@ _F_gnome_iconcache="y"
 _F_launchpad_branch="3.2"
 Finclude gnome-scriptlet launchpad
 archs=('i686' 'x86_64')
-sha1sums=('d795c2b0f57c7ac753c7a6ca5259667fc31dd87a')
+sha1sums=('bc21c09224ae945a1c2444dc013848123137e816')
 replaces=('twitux' 'libgwibber')
 
 # optimization OK
