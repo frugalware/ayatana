@@ -3,9 +3,9 @@
 
 pkgname=unity-2d
 pkgver=3.8.10
-pkgrel=1
+pkgrel=2
 pkgdesc="unity-2d project is a 2d implementation of Unity"
-depends=('libwnck2' 'libdbusmenu-qt' 'libindicator' 'libqtbamf>=0.2.1' 'libqtdee' 'libqtgconf' \
+depends=('libwnck2' 'libdbusmenu-qt' 'libindicator>=0.4.1' 'libqtbamf>=0.2.1' 'libqtdee' 'libqtgconf' \
     'utouch-geis' 'unity-asset-pool' 'libqtopengl')
 groups=('ayatana-extra')
 archs=('i686' 'x86_64')
