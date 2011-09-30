@@ -2,7 +2,7 @@
 # Maintainer: Devil505 <devil505linux@gmail.com>
 
 pkgname=nux
-pkgver=1.10.0
+pkgver=1.14.0
 pkgrel=1
 pkgdesc="An OpenGL toolkit (for Unity)"
 url="https://launchpad.net/nux"
@@ -16,6 +16,6 @@ _F_launchpad_branch="1.0"
 Finclude mono launchpad
 groups=('ayatana-extra')
 archs=('i686' 'x86_64')
-sha1sums=('4119b300184d52d25de7ae150327cea90fa9a751')
+sha1sums=('0c64b6b4d8cdbe647b717d667abdc8b59d85c68f')
 
 # optimization OK
