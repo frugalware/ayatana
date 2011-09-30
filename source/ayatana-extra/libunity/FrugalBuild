@@ -2,13 +2,13 @@
 # Maintainer: Devil505 <devil505linux@gmail.com>
 
 pkgname=libunity
-pkgver=4.0.4
+pkgver=4.0.6
 pkgrel=1
 pkgdesc="A library for instrumenting- and integrating with all aspects of the Unity shell"
-depends=('libgee' 'libdee' 'dbus-glib' 'libdbusmenu>=0.4.90')
+depends=('libgee' 'libdee' 'dbus-glib' 'libdbusmenu>=0.5.0')
 makedepends=('vala>=0.11.3')
 groups=('ayatana-extra')
 archs=('i686' 'x86_64')
 _F_launchpad_branch="4.0.0"
 Finclude launchpad
-sha1sums=('6490dbd38f17a2e7006dbcbcf7ca2c40e086a7c8')
+sha1sums=('bd5378b2600f51c966afd5f878a57d10adcc5cf0')
