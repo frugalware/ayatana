@@ -2,7 +2,7 @@
 # Maintainer: Devil505 <devil505linux@gmail.com>
 
 pkgname=libindicator
-pkgver=0.3.93
+pkgver=0.4.1
 pkgrel=1
 pkgdesc="A set of symbols and convenience functions that all indicators would like to use."
 url="https://launchpad.net/libindicator"
@@ -12,7 +12,7 @@ groups=('xlib-extra')
 archs=('i686' 'x86_64')
 _F_launchpad_branch="0.4"
 Finclude launchpad
-sha1sums=('d974bdb57a4ccf4c0a342f103f4ce6715f670065')
+sha1sums=('5db717a6b83aa1bed73032afcd625c9169ad77bb')
 
 unset MAKEFLAGS
 
