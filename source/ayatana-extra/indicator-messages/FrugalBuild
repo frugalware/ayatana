@@ -2,7 +2,7 @@
 # Maintainer: Devil505 <devil505linux@gmail.com>
 
 pkgname=indicator-messages
-pkgver=0.4.95
+pkgver=0.5.0
 pkgrel=1
 pkgdesc="A place on the user's desktop that collects messages that need a response."
 url="https://launchpad.net/indicator-messages"
@@ -14,7 +14,6 @@ archs=('i686' 'x86_64')
 _F_launchpad_branch="0.5"
 Finclude launchpad
 Fconfopts="${Fconfopts[@]} --disable-static"
-sha1sums=('bf813505e5ee7389813ab462d6b689cba93832c5')
-
+sha1sums=('ac1cf52a7d125d1fb5cc5f64ff7122ea52327a8b')
 
 # optimization OK
