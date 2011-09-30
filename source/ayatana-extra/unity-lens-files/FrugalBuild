@@ -2,13 +2,13 @@
 # Maintainer: Devil505 <devil505linux@gmail.com>
 
 pkgname=unity-lens-files
-pkgver=0.6.2
-pkgrel=2
+pkgver=0.6.10
+pkgrel=1
 pkgdesc="A daemon exposing your files and file history to Unity"
 depends=('libzeitgeist>=0.3.7' 'libunity>=3.6.3' 'zeitgeist-extensions')
 makedepends=('vala>=0.11.3' 'intltool')
 groups=('ayatana-extra')
 archs=('i686' 'x86_64')
 Finclude launchpad
-sha1sums=('1760ac41164dcfb93379e391b27297dedd70333f')
+sha1sums=('c45c12b5e59c580799fa00b86eeab50ea659b8c5')
 replaces=('unity-lens-files')
