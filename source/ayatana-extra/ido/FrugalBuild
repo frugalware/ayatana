@@ -2,7 +2,7 @@
 # Maintainer: Devil505 <devil505linux@gmail.com>
 
 pkgname=ido
-pkgver=0.2.93
+pkgver=0.3.0
 pkgrel=1
 pkgdesc="Widgets and other objects used for indicators."
 url="http://launchpad.net/ido"
@@ -13,5 +13,5 @@ groups=('ayatana-extra')
 archs=('i686' 'x86_64')
 _F_launchpad_branch="0.3"
 Finclude launchpad
-sha1sums=('69a5f4627e5476362d4f9b7147815af2d9fca0f6')
+sha1sums=('9a1ac421e9ecbb838d45cc83e724fdf648706b56')
 
