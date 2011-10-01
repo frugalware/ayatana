@@ -3,10 +3,11 @@
 
 pkgname=unity-2d
 pkgver=4.12.0
-pkgrel=2
+pkgrel=3
 pkgdesc="unity-2d project is a 2d implementation of Unity"
 depends=('libwnck2' 'libdbusmenu-qt' 'libindicator>=0.4.1' 'libqtbamf>=0.2.1' 'libqtdee' 'libqtgconf' \
-    'utouch-geis' 'unity-asset-pool' 'libqtopengl' 'dconf-qt' 'unity' 'libqttest' 'libboost')
+    'utouch-geis' 'unity-asset-pool' 'libqtopengl' 'dconf-qt' 'unity' 'libqttest' 'libboost' \
+    'libdee>=0.5')
 makedepends=('boost')
 groups=('ayatana-extra')
 archs=('i686' 'x86_64')
