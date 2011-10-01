@@ -2,21 +2,21 @@
 # Maintainer: Devil505 <devil505linux@gmail.com>
 
 pkgname=unity-2d
-pkgver=3.8.10
+pkgver=4.12.0
 pkgrel=2
 pkgdesc="unity-2d project is a 2d implementation of Unity"
 depends=('libwnck2' 'libdbusmenu-qt' 'libindicator>=0.4.1' 'libqtbamf>=0.2.1' 'libqtdee' 'libqtgconf' \
-    'utouch-geis' 'unity-asset-pool' 'libqtopengl')
+    'utouch-geis' 'unity-asset-pool' 'libqtopengl' 'dconf-qt' 'unity' 'libqttest' 'libboost')
+makedepends=('boost')
 groups=('ayatana-extra')
 archs=('i686' 'x86_64')
 Finclude cmake launchpad
 Fpkgversep="_"
 up2date="Flasttar https://launchpad.net/ubuntu/oneiric/+source/$pkgname | sed 's/.orig//g'"
 source=(https://launchpad.net/ubuntu/oneiric/+source/$pkgname/$pkgver-0ubuntu1/+files/$pkgname$Fpkgversep$pkgver.orig.tar.gz \
-        gio-unix.patch $pkgname.desktop $pkgname.session)
+        $pkgname.desktop $pkgname.session)
 _F_cd_path="$pkgname-$pkgver"
-sha1sums=('8683b8a29874db1370b37001bab1b49744b428f7' \
-          '38f4638c2af7b05fb1f83eb52350e0e946a9a8f2' \
+sha1sums=('8671643e538ae1977b151e6f3381034b746dcd09' \
           'fe674eb62915eea13a77c90c4c1ead6d947fdc6d' \
           '590c4de584afe4329317e6dab09e5a596e4773c7')
 
