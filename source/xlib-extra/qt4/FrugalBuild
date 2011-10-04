@@ -1,13 +1,13 @@
 # Compiling Time: 40.04 SBU
-# Maintainer: crazy <crazy@frugalware.org>
+# Maintainer: mcirsta <mcirsta@frugalware.org>
 
 USE_DEMOS=${USE_DEMOS:-"y"}
 USE_DETECTDEPENDS=${USE_DETECTDEPENDS:-"n"}
 
 pkgname=qt4
 _F_archive_name=qt-everywhere-opensource-src
-pkgver=4.7.3
-pkgrel=5
+pkgver=4.7.4
+pkgrel=2
 pkgdesc="The QT4 GUI toolkit."
 url="http://qt.nokia.com/products/"
 depends=()
@@ -29,15 +29,13 @@ source=(ftp://ftp.qt.nokia.com/qt/source/$_F_archive_name-$pkgver.tar.gz \
         27_dbus_signal_filter_passes_not_handled.diff \
 	frugalware.patch \
 	fix-config.tests.patch)
-sha1sums=('765eb70d9779f93fefddddda5e6ddb33f4c0b71e' \
+sha1sums=('af9016aa924a577f7b06ffd28c9773b56d74c939' \
           'ec8607cca4b4f71f6fab7309fd59f059f47d5f52' \
           'b13575e295829fa26ccaf6b11eafa394955ae073' \
           'db49f3fb3b7711a61cc6009347e455ef4030e91f' \
           '2391d180dea337fd5230273e0f1adda43491cc19' \
           '88c4b4c59718b237cebbff4925d8361d0c24db64' \
           '95d384a06306b0f545c90364a12e4a70efc2f99d' \
-          '8d65e6bff36eb0b3219d30101ea7d062504aaaf8' \
-          'e2522839807839f1af77de7ccd4c9e8c7df4acd0')
 export LD_LIBRARY_PATH=$Fsrcdir/$_F_archive_name-$pkgver/lib:${LD_LIBRARY_PATH}
 export YACC='yacc -d'
 
@@ -534,7 +532,7 @@ build()
 		-sysconfdir /etc/$pkgname \
 		-translationdir /usr/share/$pkgname/translations \
 		-fast -shared -reduce-relocations -no-rpath -no-separate-debug-info \
-		-opengl -phonon -no-phonon-backend -webkit \
+		-opengl -no-phonon -no-phonon-backend -webkit \
 		-qt-gif -system-libpng -system-libjpeg -system-libmng -system-libtiff -system-zlib \
 		-cups -glib -gtkstyle -nis -pch -stl -sm || Fdie
 
@@ -686,12 +684,6 @@ build()
 	# and remove stuff we removed before QtCore split
 	Frm usr/include/Qt{,Core}/{qatomic,qfunctions}_{macosx,symbian,vxworks,windows,windowsce}.h
         Frm usr/share/$pkgname/mkspecs
-
-	# We do build with phonon since WeKit need it ? But we use KDE's phonon so remove the files we don't need
-	Frm usr/lib/libphonon.*
-	Frm usr/include/phonon
-	Frm usr/lib/pkgconfig/phonon.pc
-	Frm usr/lib/qt4/plugins/designer/libphononwidgets.so
 
 	# Remove qfvb translation files since qt insist installing it even when enabled
 	Frm /usr/share/$pkgname/translations/qvfb_\*.qm

@@ -11,7 +11,7 @@ else
 fi
 
 pkgname=systemd
-pkgver=34
+pkgver=36
 pkgrel=1
 pkgdesc="A System and Service Manager"
 url="http://www.freedesktop.org/wiki/Software/systemd"
@@ -20,8 +20,10 @@ makedepends=('vala' 'docbook-xsl>=1.73.0-2' 'docbook-xml' 'intltool' 'gperf')
 options=('scriptlet')
 up2date="Flasttar http://www.freedesktop.org/software/$pkgname"
 source=(http://www.freedesktop.org/software/$pkgname/$pkgname-$pkgver.tar.bz2 \
+	chkconfig.patch \
 	console.conf)
-sha1sums=('e5d77fe1194a1f3260e2d768c73c479d000f8ef1' \
+sha1sums=('ebe4a0eb5c2e17e43418a6657d15470cb84d2f25' \
+          '458606a298a8e2eb200a74432a0606dccd61d451' \
           'abaa5c83d5adf2c5be188ce0de488bfa2b5a4505')
 
 if Fuse $USE_CRYPTSETUP; then
@@ -31,6 +33,12 @@ if Fuse $USE_TCP; then
         depends=("${depends[@]}"  'tcp_wrappers')
 fi
 rodepends=("${depends[@]}"  'systemd-sysvinit')
+
+if [ "$CARCH" == "i686" ]; then
+        rodepends=("${rodepends[@]}" 'kernel-initrd')
+elif [ "$CARCH" == "x86_64" ]; then
+        rodepends=("${rodepends[@]}" 'kernel-initrd')
+fi
 
 groups=('base')
 archs=('i686' 'x86_64' 'ppc' 'arm')
@@ -109,9 +117,8 @@ build()
 	Frm etc/systemd/system/*.target.wants
 
 	# support for this is disabled in the kernel
-	Frm /lib/systemd/system/dev-hugepages.automount
 	Frm /lib/systemd/system/dev-hugepages.mount
-	Frm /lib/systemd/system/sysinit.target.wants/dev-hugepages.automount
+	Frm /lib/systemd/system/sysinit.target.wants/dev-hugepages.mount
 
 	# compatibility: have 11 tty instead of 6
 	s=""
@@ -148,6 +155,5 @@ build()
 
 	touch $Fdestdir/etc/{machine-id,machine-info,locale.conf}
 }
-
 
 # optimization OK

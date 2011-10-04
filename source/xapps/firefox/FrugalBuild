@@ -1,9 +1,9 @@
-# Compiling time: 18.33 SBU
+# Compiling time: 20.56 SBU
 # Maintainer: Janny <janny@frugalware.org>
-# Contributor: VMiklos <vmiklos@frugalware.org>
+# Contributor: Miklos Vajna <vmiklos@frugalware.org>
 
 pkgname=firefox
-pkgver=6.0.1
+pkgver=7.0.1
 pathver=${pkgver} # version used in path names
 pkgrel=1
 pkgdesc="Mozilla Firefox web browser"
@@ -18,11 +18,9 @@ up2date="lynx -dump ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/lates
 source=(ftp://ftp.mozilla.org/pub/mozilla.org/firefox/releases/$pkgver/source/firefox-$pkgver.source.tar.bz2 \
 	ffremote \
 	$pkgname.desktop \
-	prefs.js)
-sha1sums=('68d08c13ae24f0c3b9c4b0c3eeb83a02c56e4229' \
-          'a797c04d67d343d068c108b804883a7815f3197b' \
-          'ff757068926b86e0c5ed82a0683fa645623c01d6' \
-          'e6789ad3634f43a8986ef35fe1876d4cde6a2e15')
+	prefs.js \
+	asciidel.patch)
+signatures=("${source[0]}.asc" '' '' '' '')
 options=('scriptlet')
 
 Fconfopts="${Fconfopts[@]} --with-default-mozilla-five-home=/usr \
