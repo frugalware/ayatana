@@ -2,15 +2,17 @@
 # Maintainer: bouleetbil <bouleetbil@frogdev.info>
 
 USE_FRUGALTHEME=${USE_FRUGALTHEME:-"y"}
+USE_REPLACEEXTENSIONS=${USE_REPLACEEXTENSIONS:-"y"}
+
 
 pkgname=gnome-shell
 pkgver=3.2.0
-pkgrel=7
+pkgrel=11
 pkgdesc="Window management and application launching for GNOME"
 url="http://www.gnome.org/"
 depends=('libxml2>=2.7.8' 'mutter>=3.2.0' 'gnome-desktop>=3.2.0' 'gjs>=1.30.0' \
 	'gnome-menus' 'librsvg' 'evolution-data-server' 'gconf' \
-	'xulrunner' 'gst-plugins-base' 'pulseaudio>=0.9.23' \
+	'xulrunner' 'gst-plugins-base' 'pulseaudio>=1.0' \
 	'gnome-themes-standard' 'ca-certificates' \
 	'gnome-bluetooth' 'gtk+3>=3.0.8' 'telepathy-glib' 'nm-applet' \
 	'telepathy-logger>=0.2.8' 'folks' 'json-glib>=0.13.90' 'caribou' \
@@ -30,13 +32,20 @@ fi
 #remove gnome-contacts gnome-documents depend after 1.6
 #HERE ADDED gnome-shell-extensions/themes ... incompatible
 replaces=("${replaces[@]}" "gnome-shell-extension-systray" "gnome-shell-extension-frugalware-logo" \
-		"gnome-shell-theme-selector" "gnome-shell-extension-autohidetopbar")
+		"gnome-shell-theme-selector" "gnome-shell-extension-autohidetopbar" "gnome-shell-extension-screen-off"\
+		"gnome-shell-extensions-mediaplayer" "gnome-shell-extensions-mediasplayers" \
+		"gnome-shell-extensions-workspace-indicator" "gnome-shell-extension-windowoverlay-icons" \
+		"gnome-shell-extension-cpu-temperature" "gnome-shell-extension-cpufreq" "gnome-shell-extension-arrow-key-window-selector")
 provides=("${provides[@]}" "gnome-shell-extension-systray" "gnome-shell-extension-frugalware-logo" \
 		"gnome-shell-theme-selector" "gnome-shell-extension-autohidetopbar")
 
+if Fuse $USE_REPLACEEXTENSIONS; then
+	replaces=("${replaces[@]}" "gnome-shell-extensions" "gnome-shell-extensions-apps-menus" \
+		"gnome-shell-extensions-theme")
+fi
 
 groups=('gnome')
-archs=('i686' 'x86_64' 'ppc')
+archs=('i686' 'x86_64')
 _F_gnome_schemas=('/etc/gconf/schemas/gnome-shell.schemas')
 _F_gnome_desktop="y"
 _F_gnome_glib="y"

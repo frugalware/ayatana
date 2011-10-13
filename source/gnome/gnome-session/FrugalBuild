@@ -5,7 +5,7 @@ USE_DEBUG=${USE_DEBUG:-"n"}
 
 pkgname=gnome-session
 pkgver=3.2.0
-pkgrel=3
+pkgrel=5
 pkgdesc="GNOME session manager"
 depends=('libxml2>=2.7.8' 'gnome-desktop>=3.2.0' 'polkit' 'upower' 'gconf-gtk'  'usermode' \
 	'dbus-glib>=0.76' 'gnome-control-center>=3.1.92' 'libnotify' 'gnome-keyring>=3.0.0' \
@@ -14,12 +14,11 @@ makedepends=('intltool' 'gnome-common')
 #gnome-session start gnome-shell and if failed start gnome-panel
 rodepends=('consolekit-x11' 'gnome-panel' 'dconf' 'gnome-shell')
 groups=('gnome')
-archs=('i686' 'x86_64' 'ppc')
+archs=('i686' 'x86_64')
 _F_gnome_glib="y"
 _F_gnome_iconcache="y"
 _F_gnome_desktop="y"
 Finclude gnome gnome-scriptlet
-source=($source check_XGetWindowProperty.diff)
 Fconfopts="$Fconfopts --with-gtk=3.0"
 source=($source check_XGetWindowProperty.diff)
 sha1sums=('470ce899f39e02b784646313e0965376165f92e1' \

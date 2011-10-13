@@ -7,7 +7,7 @@ USE_SENDTO=${USE_SENDTO:-"n"}
 #Sendto have be merged to nautilus should wait
 
 pkgname=empathy
-pkgver=3.2.0
+pkgver=3.2.0.1
 pkgrel=1
 pkgdesc="Empathy consists of a rich set of reusable instant messaging widgets"
 depends=('telepathy-glib' 'libxml2' 'enchant' 'ca-certificates' \
@@ -19,10 +19,10 @@ depends=('telepathy-glib' 'libxml2' 'enchant' 'ca-certificates' \
 	'evolution-data-server>=3.1.90' 'libcanberra-gtk' 'telepathy-farsight' \
 	'webkit-gtk3' 'unique' 'libkrb5' 'folks>=0.6.0' 'telepathy-logger' \
 	'ca-certificates' 'gsettings-desktop-schemas' 'libnotify>=0.7' 'telepathy-butterfly' \
-	'telepathy-logger>=0.2.8' 'networkmanager' 'glib-networking' 'pulseaudio' 'cheese')
+	'telepathy-logger>=0.2.8' 'networkmanager' 'glib-networking' 'pulseaudio>=1.0' 'cheese')
 makedepends=('gnome-common' 'intltool' 'gtk-doc' 'gnome-doc-utils' 'krb5' 'libxtst')
 groups=('gnome')
-archs=('i686' 'x86_64' 'ppc')
+archs=('i686' 'x86_64')
 options=('scriptlet')
 _F_gnome_iconcache="y"
 _F_gnome_desktop="y"
@@ -37,7 +37,7 @@ if Fuse $USE_MAP; then
        	depend=("${depends[@]}" "libchamplain" "geoclue")
 	Fconfopts="${Fconfopts[@]} --enable-map=yes"
 fi
-sha1sums=('13ec143b524fd539e275901491e812f989fe43a4')
+sha1sums=('cc1ebed5820da3abe116b7dcb42708f48ac7635f')
 replaces=('galaxium' 'gossip')
 
 if Fuse $USE_SENDTO; then
